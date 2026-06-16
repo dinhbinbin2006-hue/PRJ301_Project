@@ -73,4 +73,126 @@ public class CarDAO {
         }
         return result;
     }
+
+    public Car getCarByLicensePlate(String licensePlate) {
+        Car result = null;
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql = "SELECT id, cusid, licensePlate, type, brand, model, color, createdDate, status "
+                        + "FROM dbo.Cars WHERE licensePlate=? AND status=1";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setString(1, licensePlate);
+                ResultSet table = st.executeQuery();
+                if (table.next()) {
+                    result = new Car(
+                            table.getInt("id"), table.getInt("cusid"),
+                            table.getString("licensePlate"), table.getString("type"),
+                            table.getString("brand"), table.getString("model"),
+                            table.getString("color"), table.getDate("createdDate"),
+                            table.getBoolean("status")
+                    );
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    public Car getCarById(int id) {
+        Car result = null;
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql = "SELECT id, cusid, licensePlate, type, brand, model, color, createdDate, status "
+                        + "FROM dbo.Cars WHERE id=? AND status=1";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setInt(1, id);
+                ResultSet table = st.executeQuery();
+                if (table.next()) {
+                    result = new Car(
+                            table.getInt("id"), table.getInt("cusid"),
+                            table.getString("licensePlate"), table.getString("type"),
+                            table.getString("brand"), table.getString("model"),
+                            table.getString("color"), table.getDate("createdDate"),
+                            table.getBoolean("status")
+                    );
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    public int updateCar(Car car) {
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql = "UPDATE dbo.Cars SET brand=?, model=?, color=?, type=? WHERE id=?";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setString(1, car.getBrand());
+                st.setString(2, car.getModel());
+                st.setString(3, car.getColor());
+                st.setString(4, car.getType());
+                st.setInt(5, car.getId());
+                return st.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
+    }
+
+    public int deleteCar(int id) {
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql = "UPDATE dbo.Cars SET status=0 WHERE id=?";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setInt(1, id);
+                return st.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
+    }
 }
