@@ -150,4 +150,95 @@ public class CustomerDAO {
         }
         return result;
     }
+
+    public Customer getCustomerById(int cusId) {
+        Customer result = null;
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql = "SELECT cusId,fullname,gender,dateOfBirth,phone,email,password,membershipLevel,points,createdAt,status "
+                        + "FROM dbo.Customers WHERE cusId=?";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setInt(1, cusId);
+                ResultSet table = st.executeQuery();
+                if (table.next()) {
+                    String name = table.getString("fullname");
+                    String gender = table.getString("gender");
+                    Date dateOfBirth = table.getDate("dateOfBirth");
+                    String phone = table.getString("phone");
+                    String email = table.getString("email");
+                    String password = table.getString("password");
+                    String membershipLevel = table.getString("membershipLevel");
+                    int points = table.getInt("points");
+                    Date createDate = table.getDate("createdAt");
+                    boolean status = table.getBoolean("status");
+                    result = new Customer(cusId, name, gender, dateOfBirth, phone, email, password, createDate, membershipLevel, points, status);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    public int updateCustomer(Customer c) {
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql = "UPDATE dbo.Customers SET fullname=?, gender=?, dateOfBirth=?, phone=? WHERE cusId=?";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setString(1, c.getFullname());
+                st.setString(2, c.getGender());
+                st.setDate(3, c.getDateOfBirth());
+                st.setString(4, c.getPhone());
+                st.setInt(5, c.getCusId());
+                return st.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
+    }
+
+    public int deleteCustomer(int cusId) {
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql = "UPDATE dbo.Customers SET status=0 WHERE cusId=?";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setInt(1, cusId);
+                return st.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
+    }
 }
