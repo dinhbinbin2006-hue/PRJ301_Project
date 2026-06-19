@@ -190,33 +190,61 @@ public class CustomerDAO {
         }
         return result;
     }
-
+////////////////////////////////////////////////
     public int updateCustomer(Customer c) {
         Connection cn = null;
+
         try {
+
             cn = DBUtils.getConnection();
+
             if (cn != null) {
-                String sql = "UPDATE dbo.Customers SET fullname=?, gender=?, dateOfBirth=?, phone=? WHERE cusId=?";
-                PreparedStatement st = cn.prepareStatement(sql);
+
+                String sql
+                        = "UPDATE dbo.Customers "
+                        + "SET fullname=?, "
+                        + "gender=?, "
+                        + "dateOfBirth=?, "
+                        + "phone=?, "
+                        + "email=?, "
+                        + "password=?, "
+                        + "tierId=?, "
+                        + "points=? "
+                        + "WHERE cusId=?";
+
+                PreparedStatement st
+                        = cn.prepareStatement(sql);
+
                 st.setString(1, c.getFullname());
                 st.setString(2, c.getGender());
                 st.setDate(3, c.getDateOfBirth());
                 st.setString(4, c.getPhone());
-                st.setInt(5, c.getCusId());
+                st.setString(5, c.getEmail());
+                st.setString(6, c.getPassword());
+                st.setInt(7,Integer.parseInt(c.getMembershipLevel()));
+                st.setInt(8,c.getPoints());
+                st.setInt(9,c.getCusId());
+
                 return st.executeUpdate();
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+
             try {
+
                 if (cn != null) {
                     cn.close();
                 }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+
         return 0;
+
     }
 
     public int deleteCustomer(int cusId) {
@@ -261,7 +289,7 @@ public class CustomerDAO {
                     String phone = table.getString("phone");
                     String email = table.getString("email");
                     String password = table.getString("password");
-                    String membershipLevel = table.getString("membershipLevel");
+                    String membershipLevel = table.getString("tierId");
                     int points = table.getInt("points");
                     Date createDate = table.getDate("createdAt");
                     boolean status = table.getBoolean("status");
