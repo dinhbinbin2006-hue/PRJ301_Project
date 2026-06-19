@@ -51,9 +51,11 @@ public class Login extends HttpServlet {
                     request.getSession().setAttribute("LOGIN_SUCCESS", true);
 
                     // Khớp với <url-pattern>/dashboard</url-pattern> TRONG WEB.XML
-                    response.sendRedirect(
-                            "MainController?action=dashboard"
-                    );
+                    if (cus.getEmail().equals("admin@admin.com")) {
+                        response.sendRedirect("MainController?action=home");
+                    } else {
+                        response.sendRedirect("MainController?action=dashboard");
+                    }
                 } else {
                     //neu nguoi dung bi BAN thi khong vao duoc
                     response.getWriter().print("access deny!!!");
