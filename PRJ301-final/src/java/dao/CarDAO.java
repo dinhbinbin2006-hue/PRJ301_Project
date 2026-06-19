@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dao;
 
 import dbutils.DBUtils;
@@ -14,13 +10,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author HP
- */
 public class CarDAO {
 
-    //code placeholder để tạo car 
     public int createCar(Car car) {
         String sql = "insert into Cars (cusid,licensePlate,type,brand,model,color,createdDate,status)\n"
                 + "values (?,?,?,?,?,?,?,?)";
@@ -46,7 +37,7 @@ public class CarDAO {
         try {
             cn = DBUtils.getConnection();
             if (cn != null) {
-                String sql = "select id, cusid, licensePlate, brand, model, color, createdDate, status,type\n"
+                String sql = "select id, cusid, licensePlate, brand, model, color, createdDate, status, type\n"
                         + "from dbo.Cars\n"
                         + "where cusid=?";
                 PreparedStatement st = cn.prepareStatement(sql);
@@ -62,14 +53,59 @@ public class CarDAO {
                         String color = table.getString("color");
                         Date date = table.getDate("createdDate");
                         boolean status = table.getBoolean("status");
-                        Car c = new Car(id, custid, liPlate, type, brand, model, color, date, status); // ← sửa
-                        result.add(c);
+                        result.add(new Car(id, custid, liPlate, type, brand, model, color, date, status));
                     }
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    // Lấy tất cả xe cho admin (không lọc theo cusid)
+    public List<Car> getAllCarsAdmin() {
+        List<Car> result = new ArrayList<>();
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql = "SELECT id, cusid, licensePlate, type, brand, model, color, createdDate, status "
+                        + "FROM dbo.Cars";
+                PreparedStatement st = cn.prepareStatement(sql);
+                ResultSet table = st.executeQuery();
+                while (table.next()) {
+                    result.add(new Car(
+                            table.getInt("id"),
+                            table.getInt("cusid"),
+                            table.getString("licensePlate"),
+                            table.getString("type"),
+                            table.getString("brand"),
+                            table.getString("model"),
+                            table.getString("color"),
+                            table.getDate("createdDate"),
+                            table.getBoolean("status")
+                    ));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return result;
     }
@@ -195,8 +231,41 @@ public class CarDAO {
         }
         return 0;
     }
+////////////////////////////
+    public List<Car> getCarsByCustomerId(int cusId) {
+        List<Car> list = new ArrayList<>();
 
-    public List<Car> getAllCarsAdmin() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Connection cn = null;
+
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql= "SELECT * FROM Cars WHERE cusid=?";
+                PreparedStatement st= cn.prepareStatement(sql);
+                st.setInt(1, cusId);
+                ResultSet rs= st.executeQuery();
+                while (rs.next()) {
+                    Car car = new Car(
+                            rs.getInt("id"),
+                            rs.getInt("cusid"),
+                            rs.getString("licensePlate"),
+                            rs.getString("type"),
+                            rs.getString("brand"),
+                            rs.getString("model"),
+                            rs.getString("color"),
+                            rs.getDate("createdDate"),
+                            rs.getBoolean("status")
+                    );
+
+                    list.add(car);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+
     }
 }
