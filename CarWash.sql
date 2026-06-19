@@ -30,7 +30,7 @@ CREATE TABLE Customers (
 
     fullname NVARCHAR(100) NOT NULL,
 
-    gender BIT NOT NULL,
+    gender NVARCHAR(25) NOT NULL,
 
     dateOfBirth DATE NOT NULL,
 
@@ -63,6 +63,8 @@ CREATE TABLE Cars (
     cusid INT NOT NULL,
 
     licensePlate VARCHAR(20) NOT NULL UNIQUE,
+
+    type NVARCHAR(100) NOT NULL,
 
     brand NVARCHAR(100) NOT NULL,
 
@@ -236,7 +238,7 @@ INSERT INTO Customers
 VALUES
 (
     N'Nguyen Van A',
-    1,
+    'Male',
     '2000-05-10',
     '0901111111',
     'vana@gmail.com',
@@ -247,7 +249,7 @@ VALUES
 ),
 (
     N'Tran Thi B',
-    0,
+    'Female',
     '1999-08-20',
     '0902222222',
     'tranb@gmail.com',
@@ -258,7 +260,7 @@ VALUES
 ),
 (
     N'Le Van C',
-    1,
+    'Male',
     '2001-11-15',
     '0903333333',
     'levanc@gmail.com',
@@ -276,6 +278,7 @@ INSERT INTO Cars
 (
     cusid,
     licensePlate,
+    [type],
     brand,
     model,
     color
@@ -284,6 +287,7 @@ VALUES
 (
     1,
     '51A-12345',
+    N'Sedan',
     N'Toyota',
     N'Vios',
     N'Trang'
@@ -291,6 +295,7 @@ VALUES
 (
     1,
     '51H-67890',
+    N'Sedan',
     N'Hyundai',
     N'Accent',
     N'Den'
@@ -298,6 +303,7 @@ VALUES
 (
     2,
     '50F-99999',
+    N'Sedan',
     N'Kia',
     N'Seltos',
     N'Do'
