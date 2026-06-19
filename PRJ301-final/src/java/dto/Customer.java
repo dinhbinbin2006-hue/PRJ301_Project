@@ -15,7 +15,7 @@ public class Customer {
     private String fullname;
     private String gender;
     private Date dateOfBirth;
-    private int phone;
+    private String phone;
     private String email;
     private String password;
     private Date createdAt;
@@ -26,7 +26,7 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(int cusId, String fullname, String gender, Date dateOfBirth, int phone, String email, String password, Date createdAt, String membershipLevel, int points, boolean status) {
+    public Customer(int cusId, String fullname, String gender, Date dateOfBirth, String phone, String email, String password, Date createdAt, String membershipLevel, int points, boolean status) {
         this.cusId = cusId;
         this.fullname = fullname;
         this.gender = gender;
@@ -44,89 +44,90 @@ public class Customer {
         return cusId;
     }
 
-    public String getFullname() {
-        return fullname;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public int getPhone() {
-        return phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public String getMembershipLevel() {
-        return membershipLevel;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
     public void setCusId(int cusId) {
         this.cusId = cusId;
+    }
+
+    public String getFullname() {
+        return fullname;
     }
 
     public void setFullname(String fullname) {
         this.fullname = fullname;
     }
 
+    public String getGender() {
+        return gender;
+    }
+
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
     }
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public void setPhone(int phone) {
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
+    public String getMembershipLevel() {
+        return membershipLevel;
+    }
+
     public void setMembershipLevel(String membershipLevel) {
         this.membershipLevel = membershipLevel;
+    }
+
+    public int getPoints() {
+        return points;
     }
 
     public void setPoints(int points) {
         this.points = points;
     }
 
+    public boolean isStatus() {
+        return status;
+    }
+
     public void setStatus(boolean status) {
         this.status = status;
     }
 
+    
     
 }

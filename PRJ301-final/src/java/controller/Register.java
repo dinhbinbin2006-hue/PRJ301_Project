@@ -83,7 +83,7 @@ public class Register extends HttpServlet {
         String phoneStr = request.getParameter("phone");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-
+        
         // lấy thông tin xe khách hàng
         String licensePlate = request.getParameter("licensePlate");
         String brand = request.getParameter("vehicleBrand");
@@ -109,14 +109,8 @@ public class Register extends HttpServlet {
         }
 
         //set phone
-        int phone = 0;
-        if (phoneStr != null && !phoneStr.trim().isEmpty()) {
-            try {
-                phone = Integer.parseInt(phoneStr.trim());
-            } catch (Exception ignored) {
-            }
-        }
-        c.setPhone(phone);
+        
+        c.setPhone(phoneStr.trim());
 
         //set email
         c.setEmail(email);

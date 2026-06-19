@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.List;
 
 /**
  *
@@ -27,7 +28,7 @@ public class CustomerDAO {
             cn = DBUtils.getConnection();
             if (cn != null) {
                 //buoc 2 : viet sql
-                String sql = "select cusId,fullname,gender,dateOfBirth,phone,email,password,membershipLevel,points,createdAt,status\n"
+                String sql = "select cusId,fullname,gender,dateOfBirth,phone,email,password,tierId,points,createdAt,status\n"
                         + "from dbo.Customers\n"
                         + "where email=? and password=? and status=1";
                 PreparedStatement st = cn.prepareStatement(sql);
@@ -41,8 +42,8 @@ public class CustomerDAO {
                     String name = table.getString("fullname");
                     String gender = table.getString("gender");
                     Date dateOfBirth = table.getDate("dateOfBirth");
-                    int phone = table.getInt("phone");
-                    String membershipLevel = table.getString("membershipLevel");
+                    String phone = table.getString("phone");
+                    String membershipLevel = table.getString("tierId");
                     int points = table.getInt("points");
                     Date createDate = table.getDate("CreatedAt");
                     boolean status = table.getBoolean("status");
@@ -74,7 +75,7 @@ public class CustomerDAO {
             cn = DBUtils.getConnection();
             if (cn != null) {
                 //buoc 2 : viet sql
-                String sql = "select cusId,fullname,gender,dateOfBirth,phone,email,password,membershipLevel,points,createdAt,status\n"
+                String sql = "select cusId,fullname,gender,dateOfBirth,phone,email,password,tierId,points,createdAt,status\n"
                         + "from dbo.Customers\n"
                         + "where email=?";
                 PreparedStatement st = cn.prepareStatement(sql);
@@ -86,8 +87,8 @@ public class CustomerDAO {
                     String name = table.getString("fullname");
                     String gender = table.getString("gender");
                     Date dateOfBirth = table.getDate("dateOfBirth");
-                    int phone = table.getInt("phone");
-                    String membershipLevel = table.getString("membershipLevel");
+                    String phone = table.getString("phone");
+                    String membershipLevel = table.getString("tierId");
                     int points = table.getInt("points");
                     Date createDate = table.getDate("CreatedAt");
                     boolean status = table.getBoolean("status");
@@ -119,21 +120,21 @@ public class CustomerDAO {
             cn = DBUtils.getConnection();
             if (cn != null) {
                 //buoc 2 : viet sql
-                String sql = "insert dbo.Customers(fullname,gender,dateOfBirth,phone,email,password,membershipLevel,points,createdAt,status) \n"
-                        + "       values(?,?,?,?,?,?,?,?,?,?) ";
+                // CustomerDAO.java - sửa dòng sql trong createCustomer()
+                String sql = "INSERT INTO dbo.Customers([fullname],[gender],[dateOfBirth],[phone],[email],[password],[tierId],[points],[createdAt],[status])\n"
+                        + "VALUES(?,?,?,?,?,?,?,?,?,?)";
                 PreparedStatement st = cn.prepareStatement(sql);
                 st.setString(1, c.getFullname());
                 st.setString(2, c.getGender());
                 st.setDate(3, c.getDateOfBirth());
-                st.setInt(4, c.getPhone());
+                st.setString(4, c.getPhone());
                 st.setString(5, c.getEmail());
                 st.setString(6, c.getPassword());
-                st.setString(7, c.getMembershipLevel());
+                st.setInt(7, Integer.parseInt(c.getMembershipLevel()));
                 st.setInt(8, c.getPoints());
                 st.setDate(9, c.getCreatedAt());
                 st.setBoolean(10, true);
-                
-                
+
                 result = st.executeUpdate();
             }
         } catch (Exception e) {
@@ -157,7 +158,7 @@ public class CustomerDAO {
         try {
             cn = DBUtils.getConnection();
             if (cn != null) {
-                String sql = "SELECT cusId,fullname,gender,dateOfBirth,phone,email,password,membershipLevel,points,createdAt,status "
+                String sql = "SELECT cusId,fullname,gender,dateOfBirth,phone,email,password,tierId,points,createdAt,status "
                         + "FROM dbo.Customers WHERE cusId=?";
                 PreparedStatement st = cn.prepareStatement(sql);
                 st.setInt(1, cusId);
@@ -169,7 +170,7 @@ public class CustomerDAO {
                     String phone = table.getString("phone");
                     String email = table.getString("email");
                     String password = table.getString("password");
-                    String membershipLevel = table.getString("membershipLevel");
+                    String membershipLevel = table.getString("tierId");
                     int points = table.getInt("points");
                     Date createDate = table.getDate("createdAt");
                     boolean status = table.getBoolean("status");
@@ -240,5 +241,44 @@ public class CustomerDAO {
             }
         }
         return 0;
+    }
+
+    public java.util.List<Customer> getAllCustomers() {
+        java.util.List<Customer> result = new java.util.ArrayList<>();
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql = "select cusId,fullname,gender,dateOfBirth,phone,email,password,tierId,points,createdAt,status "
+                        + "from dbo.Customers";
+                PreparedStatement st = cn.prepareStatement(sql);
+                ResultSet table = st.executeQuery();
+                while (table.next()) {
+                    int cusid = table.getInt("cusId");
+                    String name = table.getString("fullname");
+                    String gender = table.getString("gender");
+                    Date dateOfBirth = table.getDate("dateOfBirth");
+                    String phone = table.getString("phone");
+                    String email = table.getString("email");
+                    String password = table.getString("password");
+                    String membershipLevel = table.getString("membershipLevel");
+                    int points = table.getInt("points");
+                    Date createDate = table.getDate("createdAt");
+                    boolean status = table.getBoolean("status");
+                    result.add(new Customer(cusid, name, gender, dateOfBirth, phone, email, password, createDate, membershipLevel, points, status));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 }

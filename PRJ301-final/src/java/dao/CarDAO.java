@@ -195,4 +195,8 @@ public class CarDAO {
         }
         return 0;
     }
+
+    public List<Car> getAllCarsAdmin() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

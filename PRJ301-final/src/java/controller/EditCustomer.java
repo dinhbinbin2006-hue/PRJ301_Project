@@ -39,7 +39,7 @@ public class EditCustomer extends HttpServlet {
         // B1
         //:Lấy customer hiện tại từ session
         HttpSession session = request.getSession(false);
-        Customer c = (Customer) session.getAttribute("CUSTOMER");
+        Customer c = (Customer) session.getAttribute("USER");
 
         // B2: Đọc thông tin mới từ form
         String fullname = request.getParameter("fullname");
@@ -69,7 +69,7 @@ public class EditCustomer extends HttpServlet {
         if (result >= 1) {
             // B6a: Thành công → cập nhật lại session với thông tin mới
             // quan trọng: phải set lại session không thì dashboard vẫn hiển thị thông tin cũ
-            session.setAttribute("CUSTOMER", c);
+            session.setAttribute("USER", c);
             response.sendRedirect("MainController?action=customerDashboard");
         } else {
             // B6b: Thất bại → báo lỗi, load lại trang edit

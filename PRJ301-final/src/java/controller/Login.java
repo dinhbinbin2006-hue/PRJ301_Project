@@ -42,7 +42,7 @@ public class Login extends HttpServlet {
 
                 // ĐÃ SỬA CHUẨN: Forward về url-pattern "/Login" thay vì "login_page.jsp" thô
                 // Việc thêm dấu gạch chéo "/" ở đầu bắt buộc để giữ nguyên URL ảo trên thanh địa chỉ
-                request.getRequestDispatcher("Login.jsp").forward(request, response);
+                request.getRequestDispatcher("login_page.jsp").forward(request, response);
 
             } else {
                 if (cus.isStatus()) {
