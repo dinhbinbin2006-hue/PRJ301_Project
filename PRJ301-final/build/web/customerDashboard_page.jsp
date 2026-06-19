@@ -52,8 +52,8 @@
             }
 
             .top-bar{
+                gap:10px;
                 display:flex;
-                justify-content:space-between;
                 align-items:center;
                 margin-bottom:30px;
             }
@@ -62,6 +62,7 @@
                 color:white;
                 font-size:32px;
                 font-weight:600;
+                margin-right: auto;
             }
 
             .logout-btn{
@@ -70,6 +71,17 @@
                 padding:12px 20px;
                 border-radius:10px;
                 text-decoration:none;
+            }
+
+            .home-btn {
+                background:#374151;
+                color:white;
+                padding:12px 20px;
+                border-radius:10px;
+                text-decoration:none;
+                border:none;
+                cursor:pointer;
+                font-size:inherit;
             }
 
             .card{
@@ -96,7 +108,7 @@
             .reward{
                 background:#14532d;
             }
-                        table{
+            table{
                 width:100%;
                 border-collapse:collapse;
                 margin-top:10px;
@@ -223,7 +235,7 @@
         function closeLogoutModal() {
             document.getElementById("logoutModal").style.display = "none";
         }
-
+//Dùng thẻ <a> thay vì <button> vì nút này chỉ điều hướng thẳng về trang chủ, không cần modal xác nhận như Logout.
     </script>
     <body>
 
@@ -234,6 +246,10 @@
                 <h1 class="title">
                     Customer Dashboard
                 </h1>
+
+                <a href="MainController?action=home" class="home-btn">
+                     Trang chủ
+                </a>
 
                 <button class ="logout-btn"
                         onclick="openLogoutModal()">
@@ -275,7 +291,7 @@
                 <h3>Điểm tích lũy</h3>
                 <p><%= cus.getPoints()%> Points</p>
             </div>
-            
+
             <div class="card">
                 <h3>Danh sách xe của bạn</h3>
                 <table>
@@ -283,23 +299,23 @@
                         <tr><th>Biển số</th><th>Hãng</th><th>Model</th><th>Màu</th><th>Loại</th></tr>
                     </thead>
                     <tbody>
-                    <%
-                        if (carList != null && !carList.isEmpty()) {
-                            for (Car car : carList) {
-                    %>
+                        <%
+                            if (carList != null && !carList.isEmpty()) {
+                                for (Car car : carList) {
+                        %>
                         <tr>
-                            <td><%= car.getLicensePlate() != null ? car.getLicensePlate() : "" %></td>
-                            <td><%= car.getBrand() != null ? car.getBrand() : "" %></td>
-                            <td><%= car.getModel() != null ? car.getModel() : "" %></td>
-                            <td><%= car.getColor() != null ? car.getColor() : "" %></td>
-                            <td><%= car.getType()  != null ? car.getType()  : "" %></td>
+                            <td><%= car.getLicensePlate() != null ? car.getLicensePlate() : ""%></td>
+                            <td><%= car.getBrand() != null ? car.getBrand() : ""%></td>
+                            <td><%= car.getModel() != null ? car.getModel() : ""%></td>
+                            <td><%= car.getColor() != null ? car.getColor() : ""%></td>
+                            <td><%= car.getType() != null ? car.getType() : ""%></td>
                         </tr>
-                    <%
+                        <%
                             }
                         } else {
-                    %>
+                        %>
                         <tr><td colspan="6">Bạn chưa đăng ký xe nào.</td></tr>
-                    <% } %>
+                        <% }%>
                     </tbody>
                 </table>
             </div>
