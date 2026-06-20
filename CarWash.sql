@@ -8,7 +8,7 @@ GO
 -- 1. TIER
 --------------------------------------------------
 CREATE TABLE Tier (
-    tierId INT NOT NULL PRIMARY KEY,
+    tierId VARCHAR(2) NOT NULL PRIMARY KEY,
 
     tierName VARCHAR(50) NOT NULL UNIQUE,
 
@@ -40,7 +40,7 @@ CREATE TABLE Customers (
 
     password VARCHAR(255) NOT NULL,
 
-    tierId INT NOT NULL,
+    tierId VARCHAR(2) NOT NULL,
 
     points INT NOT NULL DEFAULT 0,
 
