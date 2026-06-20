@@ -160,34 +160,10 @@ CREATE TABLE RewardTransactions (
 );
 GO
 
---------------------------------------------------
--- 7. PROMOTIONS
---------------------------------------------------
-CREATE TABLE Promotions (
-    promotionId INT IDENTITY(1,1) PRIMARY KEY,
 
-    tierId INT NOT NULL,
-
-    promotionTitle NVARCHAR(100) NOT NULL,
-
-    description NVARCHAR(255) NOT NULL,
-
-    discountPercent INT NOT NULL,
-
-    startDate DATE NOT NULL,
-
-    endDate DATE NOT NULL,
-
-    status BIT NOT NULL DEFAULT 1,
-
-    CONSTRAINT FK_Promotions_Tier
-        FOREIGN KEY (tierId)
-        REFERENCES Tier(tierId)
-);
-GO
 
 --------------------------------------------------
--- 8. PAYMENTS
+-- 7. PAYMENTS
 --------------------------------------------------
 CREATE TABLE Payments (
     paymentId INT IDENTITY(1,1) PRIMARY KEY,
@@ -367,45 +343,3 @@ VALUES
 );
 GO
 
---------------------------------------------------
--- INSERT PROMOTIONS
---------------------------------------------------
-INSERT INTO Promotions
-(
-    tierId,
-    promotionTitle,
-    description,
-    discountPercent,
-    startDate,
-    endDate,
-    status
-)
-VALUES
-(
-    2,
-    N'Silver Discount',
-    N'10 percent discount',
-    10,
-    '2026-01-01',
-    '2026-12-31',
-    1
-),
-(
-    3,
-    N'Gold Upgrade',
-    N'20 percent discount',
-    20,
-    '2026-01-01',
-    '2026-12-31',
-    1
-),
-(
-    4,
-    N'Platinum VIP',
-    N'30 percent discount',
-    30,
-    '2026-01-01',
-    '2026-12-31',
-    1
-);
-GO
