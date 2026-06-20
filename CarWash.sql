@@ -8,7 +8,7 @@ GO
 -- 1. TIER
 --------------------------------------------------
 CREATE TABLE Tier (
-    tierId INT IDENTITY(1,1) PRIMARY KEY,
+    tierId INT NOT NULL PRIMARY KEY,
 
     tierName VARCHAR(50) NOT NULL UNIQUE,
 
@@ -43,6 +43,10 @@ CREATE TABLE Customers (
     tierId INT NOT NULL,
 
     points INT NOT NULL DEFAULT 0,
+
+    totalPoints INT NOT NULL DEFAULT 0,
+
+    lastpointearned  DATETIME,
 
     createdAt DATETIME NOT NULL DEFAULT GETDATE(),
 
@@ -208,16 +212,18 @@ GO
 INSERT INTO Tier
 (
     tierName,
+    tierId,
     minPoints,
     bookingPriorityDays,
     bonusRate,
     status
 )
 VALUES
-('Member',0,7,0,1),
-('Silver',500,10,10,1),
-('Gold',1500,12,20,1),
-('Platinum',3000,14,30,1);
+('Admin',0,0,0,0,1),
+('Member',1,0,7,0,1),
+('Silver',2,2000,10,10,1),
+('Gold',3,6000,12,20,1),
+('Platinum',4,15000,14,30,1);
 GO
 
 --------------------------------------------------
@@ -233,6 +239,8 @@ INSERT INTO Customers
     password,
     tierId,
     points,
+    totalPoints,
+    lastpointearned,
     status
 )
 VALUES
@@ -245,6 +253,8 @@ VALUES
     '123456',
     2,
     120,
+    2100,
+    '2000-05-11',
     1
 ),
 (
@@ -256,6 +266,8 @@ VALUES
     '123456',
     3,
     450,
+    6450,
+    '2000-05-11',
     1
 ),
 (
@@ -267,6 +279,8 @@ VALUES
     '123456',
     1,
     20,
+    2020,
+    '2001-11-16',
     1
 );
 GO
