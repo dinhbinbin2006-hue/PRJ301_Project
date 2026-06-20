@@ -16,7 +16,6 @@ import java.util.List;
  *
  * @author HP
  */
-//TOÀN BỘ DAO Ở ĐÂY CƠ BẢN LÀ PLACEHOLDER CHỨ ĐÉO ĐỦ 1 CÁI CON CAK GÌ NHA MN
 public class CustomerDAO {
     //ham nay de lay Customer dua vao email,pass
 
