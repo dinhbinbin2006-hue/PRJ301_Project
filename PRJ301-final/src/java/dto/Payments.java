@@ -13,14 +13,14 @@ import java.sql.Date;
 public class Payments {
     private int paymentId;
     private int bookingId;
-    private int amount;
+    private double amount;
     private String paymentMethod;
     private Date paymentDate;
 
     public Payments() {
     }
 
-    public Payments(int paymentId, int bookingId, int amount, String paymentMethod, Date paymentDate) {
+    public Payments(int paymentId, int bookingId, double amount, String paymentMethod, Date paymentDate) {
         this.paymentId = paymentId;
         this.bookingId = bookingId;
         this.amount = amount;
@@ -44,11 +44,11 @@ public class Payments {
         this.bookingId = bookingId;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

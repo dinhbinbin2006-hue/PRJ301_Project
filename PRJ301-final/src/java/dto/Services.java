@@ -12,14 +12,14 @@ public class Services {
     private int serviceId;
     private String serviceName;
     private String description;
-    private int price;
+    private double price;
     private int durationMinutes;
     private boolean status;
 
     public Services() {
     }
 
-    public Services(int serviceId, String serviceName, String description, int price, int durationMinutes, boolean status) {
+    public Services(int serviceId, String serviceName, String description, double price, int durationMinutes, boolean status) {
         this.serviceId = serviceId;
         this.serviceName = serviceName;
         this.description = description;
@@ -52,11 +52,11 @@ public class Services {
         this.description = description;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

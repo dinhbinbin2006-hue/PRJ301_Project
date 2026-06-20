@@ -16,14 +16,14 @@ public class Booking {
     private int carId;
     private int serviceId;
     private Date bookingDate;
-    private int totalAmount;
+    private double totalAmount;
     private String bookingStatus;
     private Date createdAt;
 
     public Booking() {
     }
 
-    public Booking(int bookingId, int cusId, int carId, int serviceId, Date bookingDate, int totalAmount, String bookingStatus, Date createdAt) {
+    public Booking(int bookingId, int cusId, int carId, int serviceId, Date bookingDate, double totalAmount, String bookingStatus, Date createdAt) {
         this.bookingId = bookingId;
         this.cusId = cusId;
         this.carId = carId;
@@ -74,11 +74,11 @@ public class Booking {
         this.bookingDate = bookingDate;
     }
 
-    public int getTotalAmount() {
+    public double getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(int totalAmount) {
+    public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
     }
 
