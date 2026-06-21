@@ -51,7 +51,7 @@ public class AddCar extends HttpServlet {
         CarDAO carDAO = new CarDAO();
         if (carDAO.getCarByLicensePlate(licensePlate.trim()) != null) {
             request.setAttribute("ERROR", "Biển số xe đã tồn tại!");
-            request.getRequestDispatcher("add_car.jsp").forward(request, response);
+            request.getRequestDispatcher("MainController?action=dashboard").forward(request, response);
             return;
         }
 
@@ -70,10 +70,10 @@ public class AddCar extends HttpServlet {
         int result = carDAO.createCar(car);
 
         if (result >= 1) {
-            response.sendRedirect("MainController?action=customerDashboard");
+            response.sendRedirect("MainController?action=dashboard");
         } else {
             request.setAttribute("ERROR", "Thêm xe thất bại, vui lòng thử lại!");
-            request.getRequestDispatcher("add_car.jsp").forward(request, response);
+            request.getRequestDispatcher("MainController?action=dashboard").forward(request, response);
         }
     }
 

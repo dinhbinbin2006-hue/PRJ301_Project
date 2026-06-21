@@ -4,7 +4,7 @@
  */
 package dto;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  *
@@ -15,15 +15,15 @@ public class Booking {
     private int cusId;
     private int carId;
     private int serviceId;
-    private Date bookingDate;
+    private Timestamp bookingDate;
     private double totalAmount;
     private String bookingStatus;
-    private Date createdAt;
+    private Timestamp createdAt;
 
     public Booking() {
     }
 
-    public Booking(int bookingId, int cusId, int carId, int serviceId, Date bookingDate, double totalAmount, String bookingStatus, Date createdAt) {
+    public Booking(int bookingId, int cusId, int carId, int serviceId, Timestamp bookingDate, double totalAmount, String bookingStatus, Timestamp createdAt) {
         this.bookingId = bookingId;
         this.cusId = cusId;
         this.carId = carId;
@@ -66,11 +66,11 @@ public class Booking {
         this.serviceId = serviceId;
     }
 
-    public Date getBookingDate() {
+    public Timestamp getBookingDate() {
         return bookingDate;
     }
 
-    public void setBookingDate(Date bookingDate) {
+    public void setBookingDate(Timestamp bookingDate) {
         this.bookingDate = bookingDate;
     }
 
@@ -90,12 +90,12 @@ public class Booking {
         this.bookingStatus = bookingStatus;
     }
 
-    public Date getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-}
+} 

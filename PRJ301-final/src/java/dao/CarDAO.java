@@ -39,7 +39,7 @@ public class CarDAO {
             if (cn != null) {
                 String sql = "select id, cusid, licensePlate, brand, model, color, createdDate, status, type\n"
                         + "from dbo.Cars\n"
-                        + "where cusid=?";
+                        + "where cusid=? and status=1";
                 PreparedStatement st = cn.prepareStatement(sql);
                 st.setInt(1, custid);
                 ResultSet table = st.executeQuery();
@@ -240,7 +240,7 @@ public class CarDAO {
         try {
             cn = DBUtils.getConnection();
             if (cn != null) {
-                String sql= "SELECT * FROM Cars WHERE cusid=?";
+                String sql= "SELECT * FROM Cars WHERE cusid=? AND status=1";
                 PreparedStatement st= cn.prepareStatement(sql);
                 st.setInt(1, cusId);
                 ResultSet rs= st.executeQuery();

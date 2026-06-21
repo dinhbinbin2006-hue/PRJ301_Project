@@ -52,7 +52,7 @@ public class Login extends HttpServlet {
 
                     // Khớp với <url-pattern>/dashboard</url-pattern> TRONG WEB.XML
                     if (cus.getEmail().equals("admin@admin.com")) {
-                        response.sendRedirect("MainController?action=home");
+                        response.sendRedirect("AdminController?action=dashboard");
                     } else {
                         response.sendRedirect("MainController?action=dashboard");
                     }

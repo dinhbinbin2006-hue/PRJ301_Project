@@ -56,8 +56,7 @@ public class PaymentsDAO {
             cn = DBUtils.getConnection();
             if (cn != null) {
                 String sql = "select paymentId, bookingId, amount, paymentMethod, paymentDate\n"
-                        + "from dbo.Payments\n"
-                        + "where paymentId=?";
+                        + "from dbo.Payments\n";
                 PreparedStatement st = cn.prepareStatement(sql);
                 ResultSet table = st.executeQuery();
                 if (table != null) {
@@ -78,4 +77,33 @@ public class PaymentsDAO {
         }
         return result;
     }
+    public int createPayment(Payments c) {
+        int result = 0;
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql = "INSERT INTO dbo.Payments([bookingId],[amount],[paymentMethod],[paymentDate])\n"
+                        + "VALUES(?,?,?,?)";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setInt(1, c.getBookingId());
+                st.setDouble(2, c.getAmount());
+                st.setString(3, c.getPaymentMethod());
+                st.setDate(4, c.getPaymentDate());
+
+                result = st.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }    
 }

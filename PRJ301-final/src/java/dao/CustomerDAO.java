@@ -2,12 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 /**
  *
  * @author HP
  */
-
 package dao;
 
 import dbutils.DBUtils;
@@ -145,8 +143,8 @@ public class CustomerDAO {
         }
         return result;
     }
+// Lấy Customer theo id (dùng cho Dashboard/EditCustomer)
 
-    // Lấy Customer theo id (dùng cho Dashboard/EditCustomer)
     public Customer getCustomerById(int cusId) {
         Customer result = null;
         Connection cn = null;
@@ -366,6 +364,7 @@ public class CustomerDAO {
                 PreparedStatement stPoints = cn.prepareStatement(sqlPoints);
                 stPoints.setInt(1, cusId);
                 ResultSet rs = stPoints.executeQuery();
+
                 int totalPoints = 0;
                 if (rs.next()) {
                     totalPoints = rs.getInt("totalPoints");

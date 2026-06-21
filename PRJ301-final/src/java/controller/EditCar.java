@@ -55,13 +55,13 @@ public class EditCar extends HttpServlet {
 
         if (result >= 1) {
             // B5a: Thành công → quay về dashboard
-            response.sendRedirect("MainController?action=customerDashboard");
+            response.sendRedirect("MainController?action=dashboard");
         } else {
             // B5b: Thất bại → báo lỗi, load lại trang edit với dữ liệu cũ
             Car carData = new CarDAO().getCarById(id);
             request.setAttribute("CAR_DATA", carData);
             request.setAttribute("ERROR", "Cập nhật thất bại, vui lòng thử lại!");
-            request.getRequestDispatcher("edit_car.jsp").forward(request, response);
+            request.getRequestDispatcher("MainController?action=dashboard").forward(request, response);
         }
     }
 
@@ -77,7 +77,11 @@ public class EditCar extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        // load dữ liệu xe để hiện trog edit
+        int id = Integer.parseInt(request.getParameter("id"));
+        Car car = new CarDAO().getCarById(id);
+        request.setAttribute("CAR_DATA", car);
+        request.getRequestDispatcher("customer_edit_car.jsp").forward(request, response);
     }
 
     /**

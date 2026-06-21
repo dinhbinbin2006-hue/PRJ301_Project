@@ -118,10 +118,11 @@ public class Register extends HttpServlet {
         //setpasswork
         c.setPassword(password);
 
-        //mặc định level=1 point=0 status=true date=date tạo
+        //mặc định level=1 point=0 totalPoints=0 status=true date=date tạo
         c.setCreatedAt(new java.sql.Date(new java.util.Date().getTime()));
-        c.setMembershipLevel("1");
+        c.setMembershipLevel(dao.TierUtil.TIER_MEMBER);
         c.setPoints(0);
+        c.setTotalPoints(0);
         c.setStatus(true);
 
         CustomerDAO d = new CustomerDAO();

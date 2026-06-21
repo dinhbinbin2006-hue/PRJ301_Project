@@ -9,7 +9,7 @@ package dto;
  * @author ADMIN
  */
 public class Tier {
-    private int tierId;
+    private String tierId;
     private String tierName;
     private int minPoints;
     private int bookingPriorityDays;
@@ -19,7 +19,7 @@ public class Tier {
     public Tier() {
     }
 
-    public Tier(int tierId, String tierName, int minPoints, int bookingPriorityDays, int bonusRate, boolean status) {
+    public Tier(String tierId, String tierName, int minPoints, int bookingPriorityDays, int bonusRate, boolean status) {
         this.tierId = tierId;
         this.tierName = tierName;
         this.minPoints = minPoints;
@@ -28,11 +28,11 @@ public class Tier {
         this.status = status;
     }
 
-    public int getTierId() {
+    public String getTierId() {
         return tierId;
     }
 
-    public void setTierId(int tierId) {
+    public void setTierId(String tierId) {
         this.tierId = tierId;
     }
 

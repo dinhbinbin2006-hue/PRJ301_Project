@@ -22,11 +22,15 @@ public class Customer {
     private String  membershipLevel;
     private int points;
     private boolean status;
+    private int totalPoints;
+    private Date lastPointEarned;
 
     public Customer() {
     }
 
-    public Customer(int cusId, String fullname, String gender, Date dateOfBirth, String phone, String email, String password, Date createdAt, String membershipLevel, int points, boolean status) {
+    
+
+    public Customer(int cusId, String fullname, String gender, Date dateOfBirth, String phone, String email, String password, Date createdAt, String membershipLevel, int totalPoints, int points, Date lastPointEarned, boolean status) {
         this.cusId = cusId;
         this.fullname = fullname;
         this.gender = gender;
@@ -36,7 +40,9 @@ public class Customer {
         this.password = password;
         this.createdAt = createdAt;
         this.membershipLevel = membershipLevel;
+        this.totalPoints = totalPoints;
         this.points = points;
+        this.lastPointEarned = lastPointEarned;
         this.status = status;
     }
 
@@ -126,6 +132,22 @@ public class Customer {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public int getTotalPoints() {
+        return totalPoints;
+    }
+
+    public void setTotalPoints(int Totalpoints) {
+        this.totalPoints = Totalpoints;
+    }
+
+    public Date getLastPointEarned() {
+        return lastPointEarned;
+    }
+
+    public void setLastPointEarned(Date lastPointEarned) {
+        this.lastPointEarned = lastPointEarned;
     }
 
     

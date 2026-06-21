@@ -37,6 +37,39 @@ public class AdminController extends HttpServlet {
         }
 
         switch (action) {
+//////////////////////////////////
+            case "dashboard": {
+                List<Customer> allCustomers = new CustomerDAO().getAllCustomers();
+                List<Car> allCars = new CarDAO().getAllCarsAdmin();
+                int totalCustomers = allCustomers != null ? allCustomers.size() : 0;
+                int activeCustomers = 0;
+                if (allCustomers != null) {
+                    for (Customer c : allCustomers) {
+                        if (c.isStatus()) {
+                            activeCustomers++;
+                        }
+                    }
+                }
+                int totalCars = allCars != null ? allCars.size() : 0;
+                request.setAttribute("TOTAL_CUSTOMERS", totalCustomers);
+                request.setAttribute("ACTIVE_CUSTOMERS", activeCustomers);
+                request.setAttribute("INACTIVE_CUSTOMERS", totalCustomers - activeCustomers);
+                request.setAttribute("TOTAL_CARS", totalCars);
+
+                List<dto.Booking> allBookings = new dao.BookingDAO().getAllBooking();
+                int totalBookings = allBookings != null ? allBookings.size() : 0;
+                double totalRevenue = 0;
+                if (allBookings != null) {
+                    for (dto.Booking b : allBookings) {
+                        totalRevenue += b.getTotalAmount();
+                    }
+                }
+                request.setAttribute("TOTAL_BOOKINGS", totalBookings);
+                request.setAttribute("TOTAL_REVENUE", totalRevenue);
+
+                request.getRequestDispatcher("admin_dashboard.jsp").forward(request, response);
+                break;
+            }
             case "listCustomers": {
                 List<Customer> customerList = new CustomerDAO().getAllCustomers();
                 request.setAttribute("CUSTOMER_LIST", customerList);
@@ -45,12 +78,24 @@ public class AdminController extends HttpServlet {
             }
             ////////////////
             case "viewCustomer": {
-                int cusId= Integer.parseInt(request.getParameter("cusId"));
-                Customer cus= new CustomerDAO().getCustomerById(cusId);
-                List<Car> cars= new CarDAO().getCarsByCustomerId(cusId);
-                request.setAttribute("CUSTOMER_DETAIL",cus);
-                request.setAttribute("CUSTOMER_CARS",cars);
-                request.getRequestDispatcher("admin_customer_detail.jsp").forward(request, response);
+                int cusId
+                        = Integer.parseInt(
+                                request.getParameter("cusId"));
+                Customer cus
+                        = new CustomerDAO()
+                                .getCustomerById(cusId);
+                List<Car> cars
+                        = new CarDAO()
+                                .getCarsByCustomerId(cusId);
+                request.setAttribute(
+                        "CUSTOMER_DETAIL",
+                        cus);
+                request.setAttribute(
+                        "CUSTOMER_CARS",
+                        cars);
+                request.getRequestDispatcher(
+                        "admin_customer_detail.jsp")
+                        .forward(request, response);
                 break;
             }
             ///////////////
@@ -66,6 +111,7 @@ public class AdminController extends HttpServlet {
                     String password = request.getParameter("password");
                     String tierId = request.getParameter("tierId");
                     String pointsStr = request.getParameter("points");
+                    String totalPointsStr = request.getParameter("totalPoints");
 
                     cus.setFullname(fullname != null ? fullname.trim() : cus.getFullname());
                     cus.setGender(gender);
@@ -77,6 +123,10 @@ public class AdminController extends HttpServlet {
 
                     try {
                         cus.setPoints(Integer.parseInt(pointsStr));
+                    } catch (Exception e) {
+                    }
+                    try {
+                        cus.setTotalPoints(Integer.parseInt(totalPointsStr));
                     } catch (Exception e) {
                     }
                     if (dobStr != null && !dobStr.isEmpty()) {
@@ -94,7 +144,7 @@ public class AdminController extends HttpServlet {
                     request.setAttribute("CUSTOMER_DETAIL", cus);
                     ////////////// load lai danh sach xe
                     List<Car> cars = new CarDAO().getCarsByCustomerId(cusId);
-                    request.setAttribute("CUSTOMER_CARS",cars);
+                    request.setAttribute("CUSTOMER_CARS", cars);
                     if (result >= 1) {
                         request.setAttribute("SUCCESS", "Cập nhật thông tin thành công!");
                     } else {
@@ -118,6 +168,14 @@ public class AdminController extends HttpServlet {
                 request.getRequestDispatcher("admin_car_list.jsp").forward(request, response);
                 break;
             }
+
+            case "listBookings": {
+                List<dto.Booking> bookingList = new dao.BookingDAO().getAllBooking();
+                request.setAttribute("BOOKING_LIST", bookingList);
+                request.getRequestDispatcher("admin_booking_list.jsp").forward(request, response);
+                break;
+            }
+
             // thêm 2 case edit và update car
             case "editCar": {
                 int carId = Integer.parseInt(request.getParameter("carId"));

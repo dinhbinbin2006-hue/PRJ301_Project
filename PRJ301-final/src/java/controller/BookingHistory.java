@@ -4,12 +4,12 @@
  */
 package controller;
 
-import dao.CarDAO;
-import dto.Customer;
+import dao.BookingDAO;
+import dto.Booking;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,10 +17,9 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author HP
+ * @author ADMIN
  */
-@WebServlet(name = "RemoveCar", urlPatterns = {"/RemoveCar"})
-public class RemoveCar extends HttpServlet {
+public class BookingHistory extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,18 +33,18 @@ public class RemoveCar extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try {
-            // B1: Đọc id xe cần xóa từ URL
-            int id = Integer.parseInt(request.getParameter("carId"));
-
-            // B2: Gọi DAO soft delete (set status=0)
-            new CarDAO().deleteCar(id);
-        } catch (NumberFormatException e) {
-            // carId bị thiếu hoặc không hợp lệ -> bỏ qua, vẫn quay về dashboard
+        try ( PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet BookingHistory</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet BookingHistory at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-
-        // B3: Quay về dashboard
-        response.sendRedirect("MainController?action=dashboard");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -63,25 +62,23 @@ public class RemoveCar extends HttpServlet {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession(false);
+
+        if (session == null || session.getAttribute("USER") == null) {
+            response.sendRedirect(
+                    "MainController?action=home"
+            );
+            return;
+        }
+        BookingDAO bookingDAO = new BookingDAO();
+        List<Booking> bookingList = bookingDAO.getAllBooking();
+        request.setAttribute("bookingList", bookingList);
+        request.getRequestDispatcher("bookingHistory.jsp").forward(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

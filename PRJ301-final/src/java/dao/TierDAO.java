@@ -18,8 +18,8 @@ import java.util.List;
  */
 public class TierDAO {
 
-    public List<Tier> getTierById(int tierId) {
-        List<Tier> result = new ArrayList<>();
+    public Tier getTierById(String tierId) {
+        Tier result =null;
         Connection cn = null;
         try {
             cn = DBUtils.getConnection();
@@ -28,7 +28,7 @@ public class TierDAO {
                         + "from dbo.Tier\n"
                         + "where tierId=?";
                 PreparedStatement st = cn.prepareStatement(sql);
-                st.setInt(1, tierId);
+                st.setString(1, tierId);
                 ResultSet table = st.executeQuery();
                 if (table != null) {
                     while (table.next()) {
@@ -38,7 +38,7 @@ public class TierDAO {
                         int bonusRate = table.getInt("bonusRate");
                         boolean status = table.getBoolean("status");
                         Tier b = new Tier(tierId, tierName, minPoints, bookingPriorityDays, bonusRate, status);
-                        result.add(b);
+                        result = b;
                     }
                 }
             }
