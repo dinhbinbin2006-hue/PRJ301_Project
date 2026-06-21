@@ -1,0 +1,108 @@
+<%@ page pageEncoding="UTF-8" %> 
+<style>
+    .adm-sidebar {
+        position:fixed;
+        top:0;
+        left:0;
+        bottom:0;
+        width:240px;
+        background:#0b1220;
+        border-right:1px solid #1f2937;
+        padding:28px 16px;
+        display:flex;
+        flex-direction:column;
+        z-index:100;
+        font-family:'Segoe UI',sans-serif;
+    }
+    .adm-brand {
+        font-size:20px;
+        font-weight:700;
+        color:#60a5fa;
+        margin-bottom:8px;
+        letter-spacing:.5px;
+        padding:0 10px;
+    }
+    .adm-brand span {
+        display:block;
+        font-size:11px;
+        color:#6b7280;
+        font-weight:600;
+        letter-spacing:1.5px;
+        margin-top:2px;
+        text-transform:uppercase;
+    }
+    .adm-nav {
+        display:flex;
+        flex-direction:column;
+        gap:4px;
+        margin-top:28px;
+        flex:1;
+    }
+    .adm-nav-item {
+        display:flex;
+        align-items:center;
+        gap:12px;
+        padding:12px 14px;
+        border-radius:10px;
+        color:#cbd5e1;
+        text-decoration:none;
+        font-size:14px;
+        font-weight:500;
+        transition:.15s;
+    }
+    .adm-nav-item:hover {
+        background:#1f2937;
+        color:#ffffff;
+    }
+    .adm-nav-item.active {
+        background:#2563eb;
+        color:#ffffff;
+        font-weight:600;
+    }
+    .adm-icon {
+        font-size:16px;
+        width:20px;
+        text-align:center;
+    }
+    .adm-footer {
+        border-top:1px solid #1f2937;
+        padding-top:14px;
+        margin-top:14px;
+    }
+    .adm-admin-tag {
+        font-size:12px;
+        color:#6b7280;
+        padding:0 14px 12px 14px;
+    }
+</style>
+
+<div class="adm-sidebar">
+    <div class="adm-brand">AutoWash<span>Admin Panel</span></div>
+
+    <nav class="adm-nav">
+        <a href="AdminController?action=dashboard" class="adm-nav-item <%= "dashboard".equals(currentPage) ? "active" : ""%>">
+            <span class="adm-icon">&#128202;</span> Dashboard
+        </a>
+        <a href="AdminController?action=listCustomers" class="adm-nav-item <%= "customers".equals(currentPage) ? "active" : ""%>">
+            <span class="adm-icon">&#128100;</span> Quản lý khách hàng
+        </a>
+        <a href="AdminController?action=listCars" class="adm-nav-item <%= "cars".equals(currentPage) ? "active" : ""%>">
+            <span class="adm-icon">&#128663;</span> Quản lý xe
+        </a>
+
+        <a href="AdminController?action=listBookings" class="adm-nav-item <%= "bookings".equals(currentPage) ? "active" : ""%>">
+            <span class="adm-icon">&#128203;</span> Quản lý lịch đặt
+        </a>
+
+    </nav>
+
+    <div class="adm-footer">
+        <div class="adm-admin-tag">&#128274; <%= admin.getFullname() != null ? admin.getFullname() : admin.getEmail()%></div>
+        <a href="MainController?action=home" class="adm-nav-item">
+            <span class="adm-icon">&#8592;</span> Về trang chủ
+        </a>
+        <a href="MainController?action=logout" class="adm-nav-item">
+            <span class="adm-icon">&#9211;</span> Đăng xuất
+        </a>
+    </div>
+</div>

@@ -8,6 +8,7 @@
         return;
     }
     List<Customer> customerList = (List<Customer>) request.getAttribute("CUSTOMER_LIST");
+    String currentPage = "customers";
 %>
 <!DOCTYPE html>
 <html>
@@ -25,10 +26,10 @@
                 background:#0f172a;
                 min-height:100vh;
                 color:white;
-                padding:40px;
+                padding:40px 40px 40px 280px;
             }
             .container {
-                max-width:1100px;
+                max-width:1200px;
                 margin:auto;
             }
             .top-bar {
@@ -40,31 +41,6 @@
             h1 {
                 font-size:26px;
                 color:#60a5fa;
-            }
-            .nav-btns {
-                display:flex;
-                gap:10px;
-            }
-            .btn {
-                padding:10px 20px;
-                border-radius:8px;
-                text-decoration:none;
-                font-size:14px;
-                font-weight:600;
-            }
-            .btn-home {
-                background:#374151;
-                color:white;
-            }
-            .btn-home:hover {
-                background:#4b5563;
-            }
-            .btn-cars {
-                background:#0f766e;
-                color:white;
-            }
-            .btn-cars:hover {
-                background:#0d9488;
             }
             .stats {
                 display:flex;
@@ -150,6 +126,28 @@
                 background:#450a0a;
                 color:#f87171;
             }
+            .badge-level {
+                display:inline-block;
+                padding:3px 10px;
+                border-radius:20px;
+                font-size:12px;
+                font-weight:600;
+                background:#1e3a5f;
+                color:#93c5fd;
+            }
+            .badge-level-gold {
+                background:#451a03;
+                color:#fbbf24;
+            }
+            .badge-level-silver {
+                background:#1c1917;
+                color:#d1d5db;
+            }
+            .action-btns {
+                display:flex;
+                gap:8px;
+                align-items:center;
+            }
             .btn-view {
                 background:#2563eb;
                 color:white;
@@ -157,20 +155,100 @@
                 border-radius:6px;
                 text-decoration:none;
                 font-size:13px;
+                font-weight:500;
             }
             .btn-view:hover {
                 background:#1d4ed8;
             }
+            .btn-delete {
+                background:#dc2626;
+                color:white;
+                padding:6px 14px;
+                border-radius:6px;
+                text-decoration:none;
+                font-size:13px;
+                border:none;
+                cursor:pointer;
+                font-weight:500;
+            }
+            .btn-delete:hover {
+                background:#b91c1c;
+            }
+            /* Modal */
+            .modal {
+                position:fixed;
+                top:0;
+                left:0;
+                width:100%;
+                height:100%;
+                background:rgba(0,0,0,.7);
+                display:none;
+                justify-content:center;
+                align-items:center;
+                z-index:999;
+            }
+            .modal-content {
+                background:#111827;
+                padding:36px;
+                border-radius:16px;
+                text-align:center;
+                width:380px;
+            }
+            .modal-content h3 {
+                color:white;
+                margin-bottom:10px;
+                font-size:19px;
+            }
+            .modal-content p {
+                color:#9ca3af;
+                margin-bottom:22px;
+                font-size:14px;
+            }
+            .modal-btns {
+                display:flex;
+                gap:12px;
+                justify-content:center;
+            }
+            .modal-btns a {
+                background:#dc2626;
+                color:white;
+                padding:10px 22px;
+                border-radius:8px;
+                text-decoration:none;
+                font-weight:600;
+                font-size:14px;
+            }
+            .modal-btns button {
+                background:#374151;
+                color:white;
+                border:none;
+                padding:10px 22px;
+                border-radius:8px;
+                cursor:pointer;
+                font-weight:600;
+                font-size:14px;
+            }
         </style>
     </head>
     <body>
+        <%@ include file="includes/admin_sidebar.jspf" %>
+
+        <!-- Delete Confirm Modal -->
+        <div id="deleteModal" class="modal">
+            <div class="modal-content">
+                <div style="font-size:44px;margin-bottom:14px">&#9888;</div>
+                <h3>Xác nhận xóa khách hàng</h3>
+                <p id="deleteMsg">Bạn có chắc muốn xóa khách hàng này không?</p>
+                <div class="modal-btns">
+                    <a id="deleteConfirmLink" href="#">Xác nhận xóa</a>
+                    <button onclick="closeModal()">Hủy</button>
+                </div>
+            </div>
+        </div>
+
         <div class="container">
             <div class="top-bar">
                 <h1>&#128100; Quản lý khách hàng</h1>
-                <div class="nav-btns">
-                    <a href="AdminController?action=listCars" class="btn btn-cars">&#128663; Quản lý xe</a>
-                    <a href="MainController?action=home" class="btn btn-home">&#8592; Trang chủ</a>
-                </div>
             </div>
 
             <%
@@ -201,7 +279,9 @@
             </div>
 
             <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="&#128269; Tìm theo tên, email, số điện thoại..." onkeyup="filterTable()">
+                <input type="text" id="searchInput"
+                       placeholder="&#128269; Tìm theo tên, email, số điện thoại, hạng..."
+                       onkeyup="filterTable()">
             </div>
 
             <table id="customerTable">
@@ -212,10 +292,10 @@
                         <th>Email</th>
                         <th>Số điện thoại</th>
                         <th>Giới tính</th>
-                        <th>Hạng</th>
+                        <th>Hạng thành viên</th>
                         <th>Điểm</th>
-                        <th>Trạng thái</th>
                         <th>Ngày đăng ký</th>
+                        <th>Trạng thái</th>
                         <th>Hành động</th>
                     </tr>
                 </thead>
@@ -223,6 +303,12 @@
                     <%
                         if (customerList != null && !customerList.isEmpty()) {
                             for (Customer c : customerList) {
+                                String level = c.getMembershipLevel() != null ? c.getMembershipLevel() : "";
+                                String levelClass = "badge-level";
+                                if (level.equalsIgnoreCase("Gold"))
+                                    levelClass = "badge-level-gold";
+                                else if (level.equalsIgnoreCase("Silver"))
+                                    levelClass = "badge-level-silver";
                     %>
                     <tr>
                         <td><%= c.getCusId()%></td>
@@ -230,8 +316,13 @@
                         <td><%= c.getEmail() != null ? c.getEmail() : ""%></td>
                         <td><%= c.getPhone() != null ? c.getPhone() : ""%></td>
                         <td><%= c.getGender() != null ? c.getGender() : ""%></td>
-                        <td><%= c.getMembershipLevel() != null ? c.getMembershipLevel() : ""%></td>
+                        <td>
+                            <span class="badge <%= levelClass%>">
+                                <%= level.isEmpty() ? "—" : level%>
+                            </span>
+                        </td>
                         <td><%= c.getPoints()%></td>
+                        <td><%= c.getCreatedAt() != null ? c.getCreatedAt().toString() : ""%></td>
                         <td>
                             <% if (c.isStatus()) { %>
                             <span class="badge badge-active">Hoạt động</span>
@@ -239,22 +330,44 @@
                             <span class="badge badge-inactive">Vô hiệu</span>
                             <% }%>
                         </td>
-                        <td><%= c.getCreatedAt() != null ? c.getCreatedAt().toString() : ""%></td>
                         <td>
-                            <a href="AdminController?action=viewCustomer&cusId=<%= c.getCusId()%>" class="btn-view">Xem</a>
+                            <div class="action-btns">
+                                <a href="AdminController?action=viewCustomer&cusId=<%= c.getCusId()%>"
+                                   class="btn-view">&#128065; Xem</a>
+                                <button class="btn-delete"
+                                        onclick="confirmDelete(<%= c.getCusId()%>, '<%= c.getFullname() != null ? c.getFullname().replace("'", "\\'") : ""%>')">
+                                    &#128465; Xóa
+                                </button>
+                            </div>
                         </td>
                     </tr>
                     <%
                         }
                     } else {
                     %>
-                    <tr><td colspan="10" style="text-align:center;color:#6b7280;padding:30px">Không có khách hàng nào.</td></tr>
+                    <tr>
+                        <td colspan="10" style="text-align:center;color:#6b7280;padding:30px">
+                            Không có khách hàng nào.
+                        </td>
+                    </tr>
                     <% }%>
                 </tbody>
             </table>
         </div>
 
         <script>
+            function confirmDelete(id, name) {
+                document.getElementById("deleteMsg").innerText =
+                        "Bạn có chắc muốn xóa khách hàng \"" + name + "\" không?";
+                document.getElementById("deleteConfirmLink").href =
+                        "AdminController?action=deleteCustomer&cusId=" + id;
+                document.getElementById("deleteModal").style.display = "flex";
+            }
+
+            function closeModal() {
+                document.getElementById("deleteModal").style.display = "none";
+            }
+
             function filterTable() {
                 const input = document.getElementById("searchInput").value.toLowerCase();
                 const rows = document.querySelectorAll("#customerTable tbody tr");

@@ -9,6 +9,7 @@
         return;
     }
     List<Car> carList = (List<Car>) request.getAttribute("CAR_LIST");
+    String currentPage = "cars";
 %>
 <!DOCTYPE html>
 <html>
@@ -26,7 +27,7 @@
                 background:#0f172a;
                 min-height:100vh;
                 color:white;
-                padding:40px;
+                padding:40px 40px 40px 280px;
             }
             .container {
                 max-width:1100px;
@@ -221,7 +222,7 @@
         </style>
     </head>
     <body>
-
+<%@ include file="includes/admin_sidebar.jspf" %> 
         <!-- Delete Confirm Modal -->
         <div id="deleteModal" class="modal">
             <div class="modal-content">
@@ -238,10 +239,6 @@
         <div class="container">
             <div class="top-bar">
                 <h1>&#128663; Quản lý xe</h1>
-                <div class="nav-btns">
-                    <a href="AdminController?action=listCustomers" class="btn btn-customers">&#128100; Quản lý khách hàng</a>
-                    <a href="MainController?action=home" class="btn btn-home">&#8592; Trang chủ</a>
-                </div>
             </div>
 
             <%

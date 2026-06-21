@@ -15,6 +15,7 @@
         return;
     }
     String successMsg = (String) request.getAttribute("SUCCESS");
+    String currentPage = "customers";
     String errorMsg = (String) request.getAttribute("ERROR");
 %>
 <!DOCTYPE html>
@@ -33,7 +34,7 @@
                 background:#0f172a;
                 min-height:100vh;
                 color:white;
-                padding:40px;
+                padding:40px 40px 40px 280px;
             }
             .container {
                 max-width:750px;
@@ -222,6 +223,7 @@
         </style>
     </head>
     <body>
+        <%@ include file="includes/admin_sidebar.jspf" %>
 
         <!-- Delete Confirm Modal -->
         <div id="deleteModal" class="modal">
@@ -256,7 +258,8 @@
                 <div class="info-row"><span class="info-label">Email</span><span class="info-value"><%= cus.getEmail()%></span></div>
                 <div class="info-row"><span class="info-label">Ngày đăng ký</span><span class="info-value"><%= cus.getCreatedAt() != null ? cus.getCreatedAt().toString() : "—"%></span></div>
                 <div class="info-row"><span class="info-label">Hạng thành viên</span><span class="info-value"><%= cus.getMembershipLevel() != null ? cus.getMembershipLevel() : "—"%></span></div>
-                <div class="info-row"><span class="info-label">Điểm tích lũy</span><span class="info-value"><%= cus.getPoints()%> pts</span></div>
+                <div class="info-row"><span class="info-label">Điểm hiện có (Points)</span><span class="info-value"><%= cus.getPoints()%> pts</span></div>
+                <div class="info-row"><span class="info-label">Tổng điểm tích lũy (Total Points)</span><span class="info-value" style="color:#fbbf24"><%= cus.getTotalPoints()%> pts</span></div>
                 <div class="info-row">
                     <span class="info-label">Trạng thái</span>
                     <span class="info-value">
@@ -319,7 +322,7 @@
                            name="tierId"
                            value="<%= cus.getMembershipLevel()%>">
 
-                    <label>Points</label>
+                    <label>Points <span style="color:#6b7280;font-size:12px;">(điểm có thể dùng để đổi quà)</span></label>
                     <input type="number"
                            name="points"
                            value="<%= cus.getPoints()%>">

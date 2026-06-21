@@ -13,6 +13,7 @@
         response.sendRedirect("AdminController?action=listCustomers");
         return;
     }
+    String currentPage = "cars";
 %>
 <!DOCTYPE html>
 <html>
@@ -30,7 +31,7 @@
                 background:#0f172a;
                 min-height:100vh;
                 color:white;
-                padding:40px;
+                padding:40px 40px 40px 280px;
             }
             .container {
                 max-width:600px;
@@ -104,6 +105,7 @@
         </style>
     </head>
     <body>
+<%@ include file="includes/admin_sidebar.jspf" %>  ✅        
         <div class="container">
             <div class="top-bar">
                 <h1>&#128663; Sửa thông tin xe</h1>
